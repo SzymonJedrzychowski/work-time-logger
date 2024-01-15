@@ -5,9 +5,12 @@ from connection_util import create_connection, close_connection
 import time
 
 NAMES_MAP = {}
+DATA_LOADED = False
 
 
 def load_data():
+    global NAMES_MAP
+    
     conn = create_connection("data/logs.db")
 
     cur = conn.cursor()
@@ -67,6 +70,12 @@ def write_data(name):
 
 
 def create_log():
+    global DATA_LOADED
+
+    if not DATA_LOADED:
+        load_data()
+        DATA_LOADED = True
+            
     if is_screen_locked():
         write_data(None)
     else:

@@ -2,7 +2,7 @@ import atexit
 
 from flask import Flask
 from apscheduler.schedulers.background import BackgroundScheduler
-from logging import create_log
+from logging_util import create_log
 
 app = Flask(__name__)
 
