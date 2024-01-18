@@ -1,0 +1,50 @@
+<!doctype html>
+<title>Work Time Logger</title>
+<section>
+    <table>
+        <tr>
+            <th></th>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+        </tr>
+        <tr>
+            <th>Time in office</th>
+            {% for day in range(5) %}
+            {% if week_data_len[day]%60 < 10 %}
+            <td>{{week_data_len[day]//60}}:0{{week_data_len[day]%60}}</td>
+            {% else %}
+            <td>{{week_data_len[day]//60}}:{{week_data_len[day]%60}}</td>
+            {% endif %}
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Time not in sleep</th>
+            {% for day in range(5) %}
+            <td>{{calculate_nonsleep_time(week_data[day])}}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Start time</th>
+            {% for day in range(5) %}
+            {% if week_data_len[day] > 0 %}
+            <td>{{render_time(week_data[day][0][1])}}</td>
+            {% else %}
+            <td></td>
+            {% endif %}
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>End time</th>
+            {% for day in range(5) %}
+            {% if week_data_len[day] > 0 %}
+            <td>{{render_time(week_data[day][-1][1])}}</td>
+            {% else %}
+            <td></td>
+            {% endif %}
+            {% endfor %}
+        </tr>
+    </table>
+</section>

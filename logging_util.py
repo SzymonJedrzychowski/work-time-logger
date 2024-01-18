@@ -64,7 +64,6 @@ def write_data(name):
     curr = conn.cursor()
     curr.execute(sql, data)
     conn.commit()
-    print(f"INSERTED: {data}")
 
     close_connection(conn)
 
