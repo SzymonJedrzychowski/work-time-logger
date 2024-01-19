@@ -3,6 +3,8 @@ import time
 
 from flask import Flask, render_template
 from apscheduler.schedulers.background import BackgroundScheduler
+
+import web_controller
 from logging_util import create_log
 from connection_util import create_connection, close_connection
 
@@ -31,25 +33,13 @@ def calculate_nonsleep_time(day_data):
 
 @app.route("/")
 def home():
-    conn = create_connection("data/logs.db")
-    now = int(time.time())
-    local_time = time.localtime()
-    day_start = now - local_time.tm_hour * 3600 - local_time.tm_min * 60 - local_time.tm_sec
+    return web_controller.home(0)
 
-    week_start = day_start - local_time.tm_wday * 86400
 
-    week_data = []
-    for day in range(5):
-        cur = conn.cursor()
-        cur.execute(
-            "SELECT logs.id, logs.time, names.process_name FROM logs JOIN names ON logs.name = names.id WHERE time >= ? AND time <= ?",
-            (week_start + DAY_LENGTH * day, week_start + DAY_LENGTH * (day + 1)))
-        data = cur.fetchall()
-        week_data.append(data)
-    close_connection(conn)
-    week_data_len = [len(day_data) for day_data in week_data]
-    return render_template("base.html", week_data=week_data, week_data_len=week_data_len, max_length=max(week_data_len),
-                           render_time=render_time, calculate_nonsleep_time=calculate_nonsleep_time)
+@app.route("/<time_difference>")
+def home_with_time(time_difference=0):
+    print(time_difference)
+    return web_controller.home(int(time_difference))
 
 
 main()

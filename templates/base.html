@@ -9,6 +9,7 @@
             <th>Wednesday</th>
             <th>Thursday</th>
             <th>Friday</th>
+            <th>Sum</th>
         </tr>
         <tr>
             <th>Time in office</th>
@@ -19,12 +20,18 @@
             <td>{{week_data_len[day]//60}}:{{week_data_len[day]%60}}</td>
             {% endif %}
             {% endfor %}
+            {% if sum(week_data_len)%60 < 10 %}
+            <th>{{sum(week_data_len)//60}}:0{{sum(week_data_len)%60}}</th>
+            {% else %}
+            <th>{{sum(week_data_len)//60}}:{{sum(week_data_len)%60}}</th>
+            {% endif %}
         </tr>
         <tr>
             <th>Time not in sleep</th>
             {% for day in range(5) %}
             <td>{{calculate_nonsleep_time(week_data[day])}}</td>
             {% endfor %}
+            <th>{{calculate_nonsleep_time(week_data[0]+week_data[1]+week_data[2]+week_data[3]+week_data[4])}}</th>
         </tr>
         <tr>
             <th>Start time</th>
@@ -47,4 +54,9 @@
             {% endfor %}
         </tr>
     </table>
+    <div>
+        <a href="/{{time_difference-1}}">Previous week ({{time_difference-1}})</a><br>
+        <a href="/">This week</a><br>
+        <a href="/{{time_difference+1}}">Next week ({{time_difference+1}})</a>
+    </div>
 </section>

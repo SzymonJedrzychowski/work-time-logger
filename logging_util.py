@@ -10,7 +10,7 @@ DATA_LOADED = False
 
 def load_data():
     global NAMES_MAP
-    
+
     conn = create_connection("data/logs.db")
 
     cur = conn.cursor()
@@ -74,7 +74,7 @@ def create_log():
     if not DATA_LOADED:
         load_data()
         DATA_LOADED = True
-            
+
     if is_screen_locked():
         write_data(None)
     else:
